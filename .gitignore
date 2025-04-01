@@ -1,0 +1,6 @@
+# .gitignore file
+node_modules/
+.vscode/
+__pycache__/
+.env
+db.sqlite3

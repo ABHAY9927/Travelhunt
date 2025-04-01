@@ -1,0 +1,9 @@
+
+Total Countries in DB: 252
+Total Cities in DB: 42477
+
+Missed records from worldcities.csv in the database: 2036
+missedCities.csv Updated At: DEC 30 4:06 A.M
+
+Cities without descriptions: 6383
+noDescription.csv updated at: DEC 30 5:45 P.M
