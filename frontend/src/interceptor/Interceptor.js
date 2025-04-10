@@ -12,7 +12,7 @@ axios.interceptors.response.use(
       refresh = true;
       console.log(localStorage.getItem("access_token"));
       const response = await axios.post(
-        "http://localhost:8000/token/refresh",
+        "http://localhost:8000/api/token/refresh/",
         {
           refresh: localStorage.getItem("refresh_token"),
         },

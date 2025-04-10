@@ -152,7 +152,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_DIRS =[os.path.join(BASE_DIR, "static"),]
+# STATICFILES_DIRS =[os.path.join(BASE_DIR, "static"),]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -163,12 +163,12 @@ AUTH_USER_MODEL = 'travel_hunt_api.User'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ALLOW_CREDENTIALS = True  # 👈 Allow credentials (cookies, authentication)
+CORS_ALLOW_CREDENTIALS = True  
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # 👈 React frontend ka URL
+    "http://localhost:3000",  
 ]
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",  # 👈 React frontend ko CSRF ke liye allow karo
+    "http://localhost:3000", 
 ]
 
 CORS_ALLOW_HEADERS = [

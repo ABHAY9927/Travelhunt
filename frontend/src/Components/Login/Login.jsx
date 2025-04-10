@@ -14,7 +14,7 @@ const Login = () => {
         const email = formData.get("email");
         const password = formData.get("password");
 
-        // ✅ Check for Admin Login
+        
         if (email === "tryme@gmail.com" && password === "tryme@123") {
             localStorage.clear();
             localStorage.setItem("access_token", "admin_access_token");
@@ -24,11 +24,11 @@ const Login = () => {
             return;
         }
 
-        // ✅ Otherwise, Proceed with API Call
+        
         try {
             const response = await axios.post(
                 "http://localhost:8000/api/token/",
-                formData,
+                { email, password },
                 {
                     headers: { "Content-Type": "multipart/form-data" },
                 }

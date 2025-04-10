@@ -3,3 +3,4 @@ DB_NAME = "travel_hunt"
 DB_PORT = "3306"
 DB_USER = "root"
 DB_PASSWORD = "Abhay@9927"
+REACT_APP_API_URL=http://3.109.212.96:8000/api
