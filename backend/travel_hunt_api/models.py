@@ -111,8 +111,8 @@ class Hotel(models.Model):
 class Trip(models.Model):
     name = models.CharField(max_length=64, default="N/A")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    start = models.DateField(auto_now=False, auto_now_add=False, default="N/A")
-    end = models.DateField(auto_now=False, auto_now_add=False, default="N/A")
+    start = models.DateField(null=True, blank=True, default=None)
+    end = models.DateField(null=True, blank=True, default=None)
     is_complete = models.BooleanField(blank=False, default=False)
     locations = models.JSONField(default=list)  # Store list properly
 

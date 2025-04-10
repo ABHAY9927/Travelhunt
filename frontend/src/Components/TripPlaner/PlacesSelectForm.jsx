@@ -5,6 +5,10 @@ import { toast } from "react-toastify";
 
 const PlaceSelectForm = ({ tripCallback, selectedLocations }) => {
   const [tripname, setTripname] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [isComplete, setIsComplete] = useState(false);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -24,11 +28,15 @@ const PlaceSelectForm = ({ tripCallback, selectedLocations }) => {
       }
 
       const response = await axios.post(
-        "http://localhost:8000/api/save_trip/", 
+        "http://localhost:8000/api/save_trip/",
         {
           tripname: tripname.trim(),
           locations: selectedLocations?.length > 0 ? selectedLocations : [],
+          start: startDate,
+          end: endDate,
+          is_complete: isComplete,
         },
+      
         {
           headers: {
             "Content-Type": "application/json",
@@ -41,10 +49,10 @@ const PlaceSelectForm = ({ tripCallback, selectedLocations }) => {
 
       if (response.status === 200 || response.status === 201) { 
         toast.success("Trip Saved Successfully!");
-        navigate("/planner");
-      } else {
-        toast.success("Trip Saved Successfully!");
         navigate("/trip_saved");
+      } else {
+        toast.error("Trip not saved successfully");
+        navigate("/planner");
 
       }
     } catch (error) {
@@ -67,6 +75,33 @@ const PlaceSelectForm = ({ tripCallback, selectedLocations }) => {
           required
           className="w-full p-2 border rounded"
         />
+        <input
+  type="date"
+  value={startDate}
+  onChange={(e) => setStartDate(e.target.value)}
+  required
+  className="w-full p-2 border rounded"
+  placeholder="Start Date"
+/>
+
+<input
+  type="date"
+  value={endDate}
+  onChange={(e) => setEndDate(e.target.value)}
+  required
+  className="w-full p-2 border rounded"
+  placeholder="End Date"
+/>
+
+<label className="flex items-center space-x-2">
+  <input
+    type="checkbox"
+    checked={isComplete}
+    onChange={(e) => setIsComplete(e.target.checked)}
+  />
+  <span className="text-white">Mark as Completed</span>
+</label>
+
         <button
           type="submit"
           className="w-full bg-[#427d9d] text-white p-2 rounded hover:bg-blue-600"

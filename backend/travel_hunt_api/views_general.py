@@ -74,21 +74,21 @@ def check_city(request, city_name):
 
     cityWithCountry = City.objects.select_related('country')
 
-    print("Searching for:", city_name)  # Debugging
+    print("Searching for:", city_name)  
 
     for city in cityWithCountry:
-        print(f"DB: {city.name.lower()} - {city.country.name.lower()}")  # Debugging
+        print(f"DB: {city.name.lower()} - {city.country.name.lower()}")  
 
         if ((city.name.lower() == arr[0].lower() and city.country.name.lower() == country.lower()) or
                 (city.name.lower() == arr[0].lower())):
             requested_city_id = city.id
             requested_city_name = city.name
-            print("Match found:", requested_city_name)  # Debugging
+            print("Match found:", requested_city_name)  
 
     if requested_city_id != "":
         return Response({"city_id": requested_city_id, "city_name": requested_city_name}, status=status.HTTP_200_OK)
 
-    print("No match found!")  # Debugging
+    print("No match found!")  
     return Response({"msg": "No Data Available"}, status=status.HTTP_404_NOT_FOUND)
 
 

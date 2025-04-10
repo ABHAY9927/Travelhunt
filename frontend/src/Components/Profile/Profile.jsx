@@ -189,7 +189,19 @@ const Profile = () => {
                 <p>Start Date - {trip.start}</p>
                 <p>End Date - {trip.end}</p>
                 <p>Is Completed - {trip.is_complete ? "Yes" : "No"}</p>
-                <p>Locations: {trip.locations.join(", ")}</p>
+                <p>Locations: {Array.isArray(trip.locations) ? trip.locations.join(", ") : "None"}</p>
+
+
+                <button
+  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 mt-2 rounded"
+  onClick={() => {
+    if (window.confirm("Are you sure you want to delete this trip?")) {
+      navigate(`/delete_trip?t=${trip.id}`);
+    }
+  }}
+>
+  Delete Trip
+</button>
               </div>
             ))}
           </div>

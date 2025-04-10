@@ -117,49 +117,50 @@ def validate_signup(request):
 @permission_classes([IsAuthenticated])
 def save_trip(request):
     try:
-        print("Request Data:", request.data)  
+        print("Request Data:", request.data)
 
-        user_obj = request.user  
+        user_obj = request.user
         name = request.data.get("tripname", "")
         locations = request.data.get("locations", [])
+        start = request.data.get("start", "")
+        end = request.data.get("end", "")
+        is_complete = request.data.get("is_complete", False)
 
-        if not name or not locations:
-            return Response({"error": "Trip name & locations required"}, status=400)
+        if not name:
+            return Response({"error": "Trip name is required"}, status=400)
 
+        # Validate dates
+        if not start or not end:
+            return Response({"error": "Start and end date are required"}, status=400)
+
+        # Create trip
         trip = Trip.objects.create(
-            user=user_obj,  
+            user=user_obj,
             name=name,
-            is_complete=False,
-            locations=locations  
+            start=start,
+            end=end,
+            is_complete=is_complete,
+            locations=locations,  # directly save JSON list
         )
 
         return Response({"message": "Trip added successfully!", "trip_id": trip.id}, status=201)
 
     except Exception as e:
-        print("Exception Occurred:", str(e)) 
+        print("Exception Occurred:", str(e))
         return Response({"error": "Failed", "details": str(e)}, status=500)
+
 
 
 @api_view(['POST'])
 def get_previous_trips(request):
-    # print(request.user)
-    users = User.objects.filter(email=request.user).values('id')
-    trips = []
+    user = request.user  # this gives you the authenticated user object
 
-    for user in users:
-        print(user["id"])
-        previousTrips = Trip.objects.filter(
-            user_id=user["id"]).values('id', 'name')
-        for trip in previousTrips:
-            trips.append(trip)
-        # print(user["id"], trips)
+    trips = Trip.objects.filter(user=user).values('id', 'name', 'start', 'end', 'is_complete', 'locations')
 
-        if(len(trips) > 0):
-            return Response(trips)
+    if trips.exists():
+        return Response(trips)
 
-        return Response({"error": "Not Found"})
-    return Response({"error": "Unauthorized"})
-
+    return Response({"error": "No trips found"})
 
 @api_view(["POST"])
 def save_to_trip(request):
@@ -224,17 +225,20 @@ def get_user_detials(request):
 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def delete_trip(request):
-    trip = Trip.objects.filter(id=request.POST.get("trip_id")).all()
-    # print(request.POST.get("trip_id"))
-    
     try:
-        # print(trip)
+        trip_id = request.data.get("trip_id") or request.POST.get("trip_id")
+        if not trip_id:
+            return Response({"msg": "Trip ID is required"}, status=400)
+
+        trip = Trip.objects.filter(id=trip_id, user=request.user).first()
+        if not trip:
+            return Response({"msg": "Trip not found or unauthorized"}, status=404)
+
         trip.delete()
         return Response({"msg": "success"})
-
-    except Exception as e:
-        print(e)
-        return Response({"msg": "An error occured"})
     
-   
+    except Exception as e:
+        print("Delete error:", e)
+        return Response({"msg": "An error occurred", "error": str(e)}, status=500)
