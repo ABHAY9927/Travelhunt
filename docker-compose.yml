@@ -1,0 +1,36 @@
+
+services:
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=127.0.0.1
+      - DB_NAME=travel_hunt
+      - DB_USER=root
+      - DB_PASSWORD=Abhay@9927
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: travel_hunt
+      MYSQL_ROOT_PASSWORD: Abhay@9927
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  db_data:
