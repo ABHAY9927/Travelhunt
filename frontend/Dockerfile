@@ -1,4 +1,4 @@
-FROM node:20
+ROM node:20
 
 WORKDIR /app
 
@@ -11,3 +11,4 @@ COPY . .
 EXPOSE 3000
 
 CMD ["npm", "start"]
+
