@@ -15,7 +15,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DB_HOST=127.0.0.1
+      - DB_HOST=db
       - DB_NAME=travel_hunt
       - DB_USER=root
       - DB_PASSWORD=Abhay@9927
